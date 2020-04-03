@@ -1,0 +1,33 @@
+int echoPin = D5;
+int triggerPin = D4;
+
+unsigned long distance;
+unsigned long duration;
+String distance1;
+
+void setup() {
+  pinMode(triggerPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+  
+  Particle.variable("pulseIn", duration);
+}
+
+void loop() {
+    
+    digitalWrite(triggerPin, LOW);  //Turn off Sensor
+    delay(10000); // Wait 1 seconds
+    
+    digitalWrite(triggerPin, HIGH);  //Send out ping
+    delay(10);
+    
+    digitalWrite(triggerPin, LOW); //turn off
+    
+    duration = pulseIn(echoPin, HIGH); // listen for ping
+    
+    distance = duration; // gives distance wwith duration variable
+    
+    distance1 = String(distance);
+    
+    Particle.publish("Dist", distance1, PRIVATE);
+    
+}
